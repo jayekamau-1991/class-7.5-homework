@@ -35,7 +35,7 @@ The goal is to build a fully configured managed instance group in GCP using Clic
 6. Firewall → check Allow HTTP traffic
 7. Click Create and wait for it to finish
 
-⚠️ If your template and MIG are not in the same region the template will not appear in the dropdown. Been there.
+Note: If your template and MIG are not in the same region the template will not appear in the dropdown. Been there.
 
 ### Step 2 — Create Managed Instance Group
 1. Compute Engine → Instance Groups → Create Instance Group
@@ -72,7 +72,7 @@ The goal is to build a fully configured managed instance group in GCP using Clic
 4. Autoscaling should show On with min 2 max 10
 5. Health check should show as In Use
 
-⚠️ Health check will probably show Timeout at first if there is no web server running on port 80. That is normal in a lab setting.
+Health check will probably show Timeout at first if there is no web server running on port 80. 
 
 ---
 
