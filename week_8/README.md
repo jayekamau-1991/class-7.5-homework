@@ -23,7 +23,7 @@ The goal is to build a fully configured managed instance group in GCP using Clic
 ### Prerequisites
 - Make sure your GCP project is selected before you start or you will have to go back and redo things
 - Compute Engine API needs to be enabled
-- Create your instance template in the same region as your MIG — if the regions do not match the template will not show up in the dropdown
+- Create your instance template in the same region as your MIG if the regions do not match the template will not show up in the dropdown
 - You need IAM permissions to create Compute Engine resources
 
 ### Step 1 — Create Instance Template
@@ -85,7 +85,7 @@ Five things Terraform requires to create a VM. Name is what you call it. Machine
 Output blocks print information after terraform apply runs so you do not have to go digging in the console. For the internal IP I used google_compute_instance.vm.network_interface.0.network_ip. For external IP I used google_compute_instance.vm.network_interface.0.access_config.0.nat_ip. I found both of these in the Attributes Reference section of the Terraform registry docs for google_compute_instance.
 
 ### Two Non-Required Arguments
-description lets you leave a note on the resource explaining what it is for. Good for when other engineers are reading your code and need context without digging through everything. labels let you tag resources with key value pairs like env = production or team = devops — helps with organizing and filtering resources especially when you have a lot of them.
+description lets you leave a note on the resource explaining what it is for. Good for when other engineers are reading your code and need context without digging through everything. labels let you tag resources with key value pairs like env = production or team = devops helps with organizing and filtering resources especially when you have a lot of them.
 
 ### Finding the CentOS Stream 10 Image
 I ran this in terminal:
