@@ -4,15 +4,15 @@
 **Group:** TKO Group (led by Jacques)
 **Week:** 9 — Cloud NAT, Global Load Balancing, Cloud CDN, Cloud Armor
 **Assigned:** Fri 5/8/26 | **Due:** Thu 5/14/26
-**Last updated:** May 12, 2026
+**Last updated:** May 15, 2026
 
 ---
 
 ## Progress
 
 - [x] Load Balancers Q&A (5/5)
-- [ ] Cloud Armor Q&A (0/5)
-- [ ] Cloud CDN Q&A (0/6)
+- [x] Cloud Armor Q&A (5/5)
+- [x] Cloud CDN Q&A (6/6)
 - [ ] Runbook — global LB + MIG via ClickOps (group work)
 
 ---
@@ -45,71 +45,65 @@ Anycast is one IP address that exists in many places at once. Once you connect t
 
 ### Cloud Armor
 
-*Pending — to be completed.*
-
 **1. What does Cloud Armor offer?**
 
-_TBD_
+Cloud Armor is Google's Web Application Firewall (WAF) and DDoS protection service. It sits in front of your load balancer and inspects incoming traffic, blocking malicious requests before they reach your backends. The main protections it offers are DDoS defense, WAF rules that block common web attacks like SQL injection and cross-site scripting, and IP-based or geography-based filtering to allow or deny traffic from specific regions.
 
 **2. Why is it used in the first place?**
 
-_TBD_
+A regular firewall can't stop attacks like SQL injection. Cloud Armor does, by blocking DDoS attacks, which are floods of traffic, and filtering by IP address or country.
 
 **3. What layer in the OSI model does it operate at? Why is this important and how is this firewall different from VPC firewall rules?**
 
-_TBD_
+Cloud Armor operates at Layer 7 of the OSI model, which is the application layer. This matters because Layer 7 can read the HTTP request content, while Layer 3/4 only sees IPs and ports. VPC firewall rules work at Layer 3/4, so they can block traffic by IP or port but can't inspect the actual request — Cloud Armor can, which is why it blocks by request content, attack patterns, rates, and geography.
 
 **4. What are rate-based rules for?**
 
-_TBD_
+Rate-based rules block clients who send too many requests too fast. They're used for DDoS protection and brute-force logins that are sending many requests per minute.
 
 **5. What is reCAPTCHA and how does it relate to this service?**
 
-_TBD_
+reCAPTCHA makes sure you are not a bot and that you are a human by clicking squares with things like bikes or bridges. Cloud Armor can use reCAPTCHA to challenge any suspicious requests — if a visitor has bot vibes, Cloud Armor will test them for human validation.
 
 ---
 
 ### Cloud CDN
 
-*Pending — to be completed.*
-
 **1. What are POPs used for?**
 
-_TBD_
+POPs are physical Google data centers scattered around the world that store cached copies of your content. Google has hundreds of them, and that's how Cloud CDN delivers content fast — users get served from the nearest POP instead of from your origin server.
 
 **2. What kind of files are served with Cloud CDN?**
 
-_TBD_
+Static files like images, videos, CSS, JavaScript, fonts, and HTML. CDN is not good for dynamic content or anything that updates constantly.
 
 **3. What services can be used with Cloud CDN for the source of content (the origin)?**
 
-_TBD_
+Cloud CDN can pull content from Cloud Storage buckets, VMs with a backend service on the load balancer, Managed Instance Groups (MIGs) which are groups of virtual machines that auto-scale and self-heal, and external origins which are servers outside of GCP.
 
 **4. Does Cloud CDN help protect against any types of malicious actors or cyberattacks? Explain.**
 
-_TBD_
+Cloud CDN helps absorb DDoS traffic by spreading the load across Google's POPs, which makes it harder for attackers to overwhelm your origin. It also hides the origin server, which makes it harder to target. But it's not a full security solution — Cloud Armor handles real web attack protection.
 
 **5. Should an enterprise always use Cloud CDN? Why or why not?**
 
-_TBD_
+An enterprise should not always use Cloud CDN. It is good for static content like images, videos, JavaScript, and CSS — especially when users are globally spread out and you have high traffic that benefits from caching. It is not a good fit when your content is dynamic or personalized, when traffic is low, when all your users are in one region (a regional setup is cheaper), or when you need real-time data.
 
 **6. What is TTL and how does it control content "freshness"?**
 
-_TBD_
+TTL is Time To Live in seconds. It's a number that says how long a cached copy is valid before CDN has to grab a fresh version from the origin. Short TTL is expensive because it keeps the data freshly cached. Long TTL is fast and cheap but the data might be stale.
 
 ---
 
 ## Runbook — Global LB + MIG via ClickOps
 
-*Group work — pending.*
+*Group work — in progress.*
 
 **Goal:** Spin up a fully configured external application global load balancer via ClickOps, using a MIG as the backend. Health checks required.
 
 ---
 
 ## Documentation & Resources Used
-
-*To be filled in as work progresses.*
 
 - Cloud NAT: https://docs.cloud.google.com/nat/docs/private-nat
 - Global LB: https://docs.cloud.google.com/load-balancing/docs/https/setup-global-ext-https-compute
