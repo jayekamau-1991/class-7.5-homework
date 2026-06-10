@@ -1,0 +1,92 @@
+# SEIR-1 — WEEK 7 COMPLETION SUMMARY
+## GCP Static Website Hosting with Terraform
+**Date completed:** April 25, 2026
+**Status:** ✅ Submitted
+
+---
+
+## What I built
+
+A public static website hosted on Google Cloud Storage, fully provisioned with Terraform. Live URL during testing: `https://storage.googleapis.com/kamau-week7-site-2026/index.html`. Verified publicly accessible by a TKO Group classmate before destroying the infrastructure.
+
+---
+
+## What I did
+
+**Setup**
+- Created working folder: `/Users/devopsstudy/Class_7_ZION/Class 7.5/SEIR-1/weekly_lessons/week7/terraform`
+- Downloaded lab assets via curl (`index.html`, `404.html`, `style.css`)
+- Converted personal image from PNG to JPEG using `sips` to match what `index.html` expected (`image.jpg`)
+
+**Terraform code written**
+- `provider.tf` — Google provider, project `kamau-lab4-2026`, region `us-central1`
+- `backend.tf` — local state backend
+- `main.tf` — bucket, 4 objects, IAM member for public access, website hosting block
+- `outputs.tf` — interpolated URL using `${google_storage_bucket.site.name}`
+
+**Build sequence (one stage at a time, applied between each)**
+1. Created empty bucket — verified in GCP console
+2. Uploaded `index.html` — verified
+3. Uploaded `404.html` — verified
+4. Uploaded `style.css` — verified
+5. Uploaded `image.jpg` — verified
+6. Added `google_storage_bucket_iam_member` granting `allUsers` the `roles/storage.objectViewer` role — verified site became public in browser
+7. Added `website {}` block with `main_page_suffix = "index.html"` and `not_found_page = "404.html"` — verified static hosting settings applied
+8. Created `outputs.tf` for the live URL — verified URL printed on apply
+
+**Testing**
+- Loaded site in my own browser — confirmed styled HTML page with image rendered correctly
+- Loaded `404.html` directly — confirmed error page accessible
+- TKO Group classmate loaded the URL from their machine — confirmed truly public
+
+**Submission**
+- Notes written in standard format (`SEIR1_Week7_Notes.md`)
+- Copied notes + `.tf` files into homework repo at `class-7.5-homework/week_7/`
+- Added `.gitignore` in `terraform/` subfolder to exclude state files
+- Committed and pushed to `jayekamau-1991/class-7.5-homework` on `kamau` branch
+- Submitted to Jacques via PR #2 (existing rolling PR)
+
+**Cleanup**
+- Ran `terraform destroy` — 6 resources destroyed (1 bucket + 4 objects + 1 IAM member)
+- `force_destroy = true` allowed clean teardown without manually emptying the bucket first
+
+---
+
+## Concepts learned (or reinforced)
+
+- **Infrastructure as Code (IaC)** — finally clicked as a concept. Code-defined infrastructure is reproducible, version-controlled, scalable, and self-documenting.
+- **Interpolation (`${...}`)** — like a mail merge for code; placeholders that get filled in at apply time. Better than hardcoding because changes propagate automatically.
+- **`iam_member` vs `iam_binding` vs `iam_policy`** — three IAM resources with very different blast radii. `iam_member` is additive and safe; the other two can wipe permissions.
+- **Uniform bucket-level access** — disables legacy ACLs, forces all permissions through IAM. Modern, recommended.
+- **Content-Type headers** — browsers respect them. Wrong type = broken rendering even if the file is correct.
+- **Real format conversion vs renaming extensions** — renaming `.png` to `.jpg` does not change the bytes inside. `sips` does a real conversion.
+- **GCP vs AWS static hosting** — GCP doesn't auto-generate a static-site endpoint URL like S3 does. The URL has to be constructed manually.
+- **HCL block structure** — every `{` needs a matching `}` on its own line. Nested blocks need nested closes.
+- **Two GCP auth commands** — `gcloud auth login` (for the CLI) and `gcloud auth application-default login` (for Terraform). Different credential stores.
+
+---
+
+## Friction points
+
+- **Multiple `Week 7`-style folders** (`weekg`, `Week 7`, `week_7`, `week7`) caused real confusion. VS Code and Terminal ended up looking at different folders, which made it look like files weren't saving when they actually were — just to the wrong place.
+- **`}}` on one line failed validation** — Terraform requires each block-closing `}` on its own line.
+- **Notes saved as `.rtf` from TextEdit instead of `.md`** — wasted time. Lesson: download files directly from chat instead of copy-pasting into a desktop editor.
+
+---
+
+## Lab follow-up questions
+
+- ✅ Q1 — Is Terraform a good tool to provision buckets? Yes (IaC, scaling, version tracking, code as documentation)
+- ✅ Q2 — Is Terraform ideal for uploading objects? No at scale (state file bloat); use `gsutil rsync` or CI/CD for content
+- ✅ Q3 — How was the output written? AWS gives a static endpoint, GCP doesn't. Built URL manually using interpolation referencing the bucket's name attribute, so the output updates automatically if the bucket name changes.
+- ⬜ Q4 — IAM and uniform bucket-level access (pending)
+- ⬜ Q5 — What setting enabled static website hosting (pending)
+- ⬜ Q6 — Improvements to this infrastructure (pending)
+
+---
+
+## Status
+
+**Week 7: SUBMITTED — pending Jacques' gate confirmation.**
+
+**END OF WEEK 7 COMPLETION SUMMARY**
