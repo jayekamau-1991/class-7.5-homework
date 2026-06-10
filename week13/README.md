@@ -10,7 +10,7 @@ Policy-based: traffic is matched by specific rules about source/destination IP r
 HA VPN uses 2 tunnels across 2 interfaces. If one fails the other takes over automatically. It requires BGP for dynamic routing — the 2 sides exchange routes automatically over the tunnel. Use case: production workloads where high availability is required and downtime cannot be tolerated. SLA is 99.99% vs Classic VPN's 99.9%.
 
 
-# Week 13 FinOps Budget Alerts Runbook
+Week 13 FinOps Budget Alerts Runbook
 
 What is FinOps?
 
@@ -64,7 +64,7 @@ a Pub/Sub topic. From Pub/Sub it can trigger other automated
 actions. I have not built the automated part yet but I 
 understand that is the next step.
 
-
+![FinOps Architecture Diagram](finops_architecture.png)
 
 Steps I Followed
 
